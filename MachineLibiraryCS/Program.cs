@@ -94,8 +94,12 @@ namespace MachineLibiraryCS
         static void Main(string[] args)
         {
             Utilities u = new Utilities();
-            double distance = u.Sim_distance(Critics, "Eissa", "Atef");
-            Console.WriteLine(distance);
+            double distanceSimilarity = u.Sim_distance(Critics, "Eissa", "Atef");
+            Console.WriteLine(distanceSimilarity);
+
+            double personSimilarity = u.Sim_Pearson(Critics, "Eissa", "Atef");
+            Console.WriteLine(personSimilarity);
+
             Console.Read();
         }
     }
