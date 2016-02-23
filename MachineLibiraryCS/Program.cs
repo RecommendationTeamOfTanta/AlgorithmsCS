@@ -8,7 +8,7 @@ namespace MachineLibiraryCS
 {
     class Program
     {
-        public Dictionary<string, Dictionary<string, double>> Critics = new Dictionary<string, Dictionary<string, double>>
+        public static Dictionary<string, Dictionary<string, double>> Critics = new Dictionary<string, Dictionary<string, double>>
         {
             {
                 "Eissa",
@@ -93,6 +93,10 @@ namespace MachineLibiraryCS
 
         static void Main(string[] args)
         {
+            Utilities u = new Utilities();
+            double distance = u.Sim_distance(Critics, "Eissa", "Atef");
+            Console.WriteLine(distance);
+            Console.Read();
         }
     }
 }
