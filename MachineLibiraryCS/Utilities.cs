@@ -91,7 +91,7 @@ namespace MachineLibiraryCS
         }
 
 
-        // return the best n top matches for person 
+        // return the best n top matches for personn
         public Dictionary<string,double> topMatches(Dictionary<string,Dictionary<string, double>> data,
             string person,delegateFunc similarity, int n = 5)
         {
