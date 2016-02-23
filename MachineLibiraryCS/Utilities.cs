@@ -15,7 +15,7 @@ namespace MachineLibiraryCS
         public double Sim_distance(Dictionary<string, Dictionary<string, double>> data, string person1, string person2)
         {
             double sum_of_squares = 0;
-
+            
             //the list of common items between person1 and person2
             Dictionary<string, int> si = new Dictionary<string, int>();
 
