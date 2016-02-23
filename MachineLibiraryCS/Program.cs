@@ -100,6 +100,8 @@ namespace MachineLibiraryCS
             double personSimilarity = u.Sim_Pearson(Critics, "Eissa", "Atef");
             Console.WriteLine(personSimilarity);
 
+            var eee = u.topMatches(Critics, "Gaber", u.Sim_Pearson, 3);
+
             Console.Read();
         }
     }

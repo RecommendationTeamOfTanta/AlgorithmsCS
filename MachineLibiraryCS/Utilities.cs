@@ -8,6 +8,9 @@ namespace MachineLibiraryCS
 {
     public class Utilities
     {
+        // to make the similarity function as sn optional parameter  in tomatches arguments 
+        public delegate double delegateFunc(Dictionary<string, Dictionary<string, double>> data, string person1, string person2);
+
         // a distance-based similarity to measure similarity between person1 and person2 (euclidean distance)
         public double Sim_distance(Dictionary<string, Dictionary<string, double>> data, string person1, string person2)
         {
@@ -39,14 +42,13 @@ namespace MachineLibiraryCS
         //Pearson correlation to measure similarity between person1 and person2
         public double Sim_Pearson(Dictionary<string, Dictionary<string, double>> data, string person1, string person2)
         {
-            double sum1 = 0, sum2 = 0, sum1Sq = 0, sum2Sq = 0, pSum = 0, num = 0, den = 0,result=0;
+            double sum1 = 0, sum2 = 0, sum1Sq = 0, sum2Sq = 0, pSum = 0, num = 0, den = 0, result = 0;
             //the list of common items between person1 and person2
             Dictionary<string, int> si = new Dictionary<string, int>();
 
             //store the number of common films between person1 and person2
             int n = 0;
 
-            double sum_of_squares = 0;
 
             //loop through person1's films
             foreach (var item in data[person1])
@@ -84,9 +86,29 @@ namespace MachineLibiraryCS
             // to avoid devide by zero error
             if (den == 0) return 0;
 
-            result = num / den; 
+            result = num / den;
             return result;
         }
+
+
+        // return the best n top matches for person 
+        public Dictionary<string,double> topMatches(Dictionary<string,Dictionary<string, double>> data,
+            string person,delegateFunc similarity, int n = 5)
+        {
+            Dictionary<string, double> scores = new Dictionary<string, double>();
+            foreach(var item in data)
+            {
+                if(item.Key!=person)
+                {
+                    scores[item.Key] = similarity(data, person, item.Key);
+                }
+            }
+
+            // return sorted ascending dictionary
+            return scores.OrderByDescending(x => x.Value).Take(n).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+       
 
     }
 }
