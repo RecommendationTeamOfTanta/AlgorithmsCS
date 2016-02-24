@@ -94,13 +94,49 @@ namespace MachineLibiraryCS
         static void Main(string[] args)
         {
             Utilities u = new Utilities();
+
+            //test the euqlidean distance
             double distanceSimilarity = u.Sim_distance(Critics, "Eissa", "Atef");
+            Console.WriteLine("distance similarity:");
             Console.WriteLine(distanceSimilarity);
 
+            //test the pearson correlation
             double personSimilarity = u.Sim_Pearson(Critics, "Eissa", "Atef");
+            Console.WriteLine("Pearson:");
             Console.WriteLine(personSimilarity);
 
-            var eee = u.topMatches(Critics, "Gaber", u.Sim_Pearson, 3);
+            //test the n topMatches function using eqlidan distance
+            var topMatches1 = u.topMatches(Critics, "Gaber", u.Sim_distance, 5);
+            Console.WriteLine("the top 5 mtches to Gaber and using eqlidean: ");
+            foreach (var user in topMatches1)
+            {
+                Console.WriteLine(user.Key + " : " + user.Value);
+            }
+
+            //test the n topMatches function using pearson correlation
+            var topMatches2 = u.topMatches(Critics, "Gaber", u.Sim_Pearson, 5);
+            Console.WriteLine("the top 5 mtches to Gaber and using Pearson correlation: ");
+            foreach (var user in topMatches2)
+            {
+                Console.WriteLine(user.Key + " : " + user.Value);
+            }
+
+
+            //dddddddddddddddd
+            var getRecommendations1 = u.getRecommendations(Critics, "Gaber", u.Sim_distance);
+            var gerRecommendations2 = u.getRecommendations(Critics, "Gaber", u.Sim_Pearson);
+
+            Console.WriteLine("recommendations using weighted average and distance similarity(euqlidean)");
+            foreach (var item in getRecommendations1)
+            {
+                Console.WriteLine(item.Key + " : " + item.Value);
+            }
+
+            //Console.WriteLine("recommendations using weighted average and pearson correlation similarity");
+            ////foreach (var item in gerRecommendations2)
+            ////{
+            //    Console.WriteLine(getRecommendations1);
+            ////}
 
             Console.Read();
         }

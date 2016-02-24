@@ -15,7 +15,7 @@ namespace MachineLibiraryCS
         public double Sim_distance(Dictionary<string, Dictionary<string, double>> data, string person1, string person2)
         {
             double sum_of_squares = 0;
-            
+
             //the list of common items between person1 and person2
             Dictionary<string, int> si = new Dictionary<string, int>();
 
@@ -91,24 +91,70 @@ namespace MachineLibiraryCS
         }
 
 
-        // return the best n top matches for personn
-        public Dictionary<string,double> topMatches(Dictionary<string,Dictionary<string, double>> data,
-            string person,delegateFunc similarity, int n = 5)
+        // return the best n top matches for person
+        public Dictionary<string, double> topMatches(Dictionary<string, Dictionary<string, double>> data,
+            string person, delegateFunc similarity, int n = 5)
         {
             Dictionary<string, double> scores = new Dictionary<string, double>();
-            foreach(var item in data)
+            foreach (var item in data)
             {
-                if(item.Key!=person)
+                if (item.Key != person)
                 {
                     scores[item.Key] = similarity(data, person, item.Key);
                 }
             }
 
-            // return sorted ascending dictionary
+            // return sorted descending dictionary of recommendations
             return scores.OrderByDescending(x => x.Value).Take(n).ToDictionary(x => x.Key, x => x.Value);
         }
 
-       
+
+        // Gets recommendations for a person by using a weighted average of every other user's rankings
+        public Dictionary<string, double> getRecommendations(Dictionary<string, Dictionary<string, double>> data,
+            string person, delegateFunc similarity)
+        {
+            double sim = 0;
+
+            // to store sim * rating for all persons 
+            Dictionary<string, double> totals = new Dictionary<string, double>();
+
+            //to store the sum of similarities 
+            Dictionary<string, double> simSum = new Dictionary<string, double>();
+
+            // to store the recommended movies
+            Dictionary<string, double> rankings = new Dictionary<string, double>();
+
+            foreach (var pers in data)
+            {
+                if (pers.Key == person) continue;
+                sim = similarity(data, person, pers.Key);
+                if (sim <= 0) continue;
+                foreach (var movie in data[pers.Key])
+                {
+                    if (!data[person].ContainsKey(movie.Key) || movie.Value == 0)
+                    {
+                        totals[movie.Key] = 0;
+                        totals[movie.Key] += movie.Value * sim;
+                        simSum[movie.Key] = 0;
+                        simSum[movie.Key] += sim;
+                    }
+                }
+            }
+
+            foreach (var item in totals)
+            {
+                double ee = (item.Value / simSum.Where(x => x.Key == item.Key).FirstOrDefault().Value);
+                rankings[item.Key] =ee;
+
+            }
+
+            // return sorted descending dictionary of recommendations
+            return rankings.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+
+
+
 
     }
 }
