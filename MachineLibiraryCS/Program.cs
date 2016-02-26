@@ -123,8 +123,8 @@ namespace MachineLibiraryCS
 
 
             //dddddddddddddddd
-            var getRecommendations1 = u.getRecommendations(Critics, "Gaber", u.Sim_distance);
-            var gerRecommendations2 = u.getRecommendations(Critics, "Gaber", u.Sim_Pearson);
+            var getRecommendations1 = u.getRecommendations(Critics, "Gaber", u.Sim_Pearson);
+            var gerRecommendations2 = u.getRecommendations(Critics, "Gaber", u.Sim_distance);
 
             Console.WriteLine("recommendations using weighted average and distance similarity(euqlidean)");
             foreach (var item in getRecommendations1)
@@ -138,6 +138,7 @@ namespace MachineLibiraryCS
             //    Console.WriteLine(getRecommendations1);
             ////}
 
+            var ttt = u.TransformData(Critics);
             Console.Read();
         }
     }

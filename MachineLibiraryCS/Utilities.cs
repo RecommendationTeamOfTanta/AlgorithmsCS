@@ -144,12 +144,31 @@ namespace MachineLibiraryCS
             foreach (var item in totals)
             {
                 double ee = (item.Value / simSum.Where(x => x.Key == item.Key).FirstOrDefault().Value);
-                rankings[item.Key] =ee;
+                rankings[item.Key] = ee;
 
             }
 
             // return sorted descending dictionary of recommendations
             return rankings.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        //data transformation (to transform rows and columns)
+        public Dictionary<string, Dictionary<string, double>> TransformData(Dictionary<string, Dictionary<string, double>> data)
+        {
+            Dictionary<string, Dictionary<string, double>> result = new Dictionary<string, Dictionary<string, double>>();
+            foreach (var person in data)
+            {
+                foreach (var item in data[person.Key])
+                {
+
+                    if (!result.ContainsKey(item.Key))
+                    {
+                        result[item.Key] = new Dictionary<string, double>();
+                    }
+                    result[item.Key].Add(person.Key, item.Value);
+                }
+            }
+            return result;
         }
 
 
