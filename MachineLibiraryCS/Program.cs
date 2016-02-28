@@ -99,7 +99,7 @@ namespace MachineLibiraryCS
             double distanceSimilarity = u.Sim_distance(Critics, "Eissa", "Atef");
             Console.WriteLine("distance similarity:");
             Console.WriteLine(distanceSimilarity);
-
+            
             //test the pearson correlation
             double personSimilarity = u.Sim_Pearson(Critics, "Eissa", "Atef");
             Console.WriteLine("Pearson:");
@@ -138,7 +138,23 @@ namespace MachineLibiraryCS
             //    Console.WriteLine(getRecommendations1);
             ////}
 
-            var ttt = u.TransformData(Critics);
+            // item to item similarity
+            Console.WriteLine("item to item similarity(top-matches)");
+            var transformedData = u.TransformData(Critics);
+            var topMatchedAfterTransformation = u.topMatches(transformedData, "Superman Returns", u.Sim_Pearson);
+            foreach (var film in topMatchedAfterTransformation)
+            {
+                Console.WriteLine(film.Key + " :" + film.Value);
+            }
+
+            // item to item similarity
+            Console.WriteLine("item to item similarity(getRecommendation)");
+            var recommendationss = u.getRecommendations(transformedData, "Just My Luck", u.Sim_Pearson);
+            foreach (var film in recommendationss)
+            {
+                Console.WriteLine(film.Key + " :" + film.Value);
+            }
+
             Console.Read();
         }
     }

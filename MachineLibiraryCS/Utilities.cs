@@ -8,6 +8,12 @@ namespace MachineLibiraryCS
 {
     public class Utilities
     {
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        /*
+         * first section ---User based collaboravive filtering
+         */
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
         // to make the similarity function as sn optional parameter  in tomatches arguments 
         public delegate double delegateFunc(Dictionary<string, Dictionary<string, double>> data, string person1, string person2);
 
@@ -172,6 +178,29 @@ namespace MachineLibiraryCS
         }
 
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        /*
+         * first section ---item based collaboravive filtering
+         */
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        public Dictionary<string,Dictionary<string,double>> calculateSimilarItems(Dictionary<string,
+            Dictionary<string, double>> data,int n =5)
+        {
+            Dictionary<string,Dictionary<string,double>> Result = new Dictionary<string,Dictionary<string,double>>();
+
+            // invert the matrix
+            var itemData = TransformData(data);
+            foreach(var item in itemData)
+            {
+                // find the most similar items to this one
+               Result[item.Key]=topMatches(data,item.Key,Sim_distance,n);
+
+            }
+            return Result;
+        }
 
 
 
